@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Prediction
+{% endblock %}
+
+{% block main %}
+    <!-- Hero Section -->
+    <header class="hero-section text-center text-white d-flex align-items-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold ">Welcome to Stockfolio</h1>
+            <p class="lead">Learn, Simulate, and Trade Safely in the Virtual Stock Market.</p>
+            <a href="#features" class="btn btn-primary btn-lg">Get Started</a>
+        </div>
+    </header>
+    
+
+    <!-- Features Section -->
+    <section id="features" class="py-5 features-section">
+        <div class="container">
+            <h2 class="text-center section-title">Key Features</h2>
+            <p class="text-center section-description">
+                Discover the powerful tools and insights that make Stockfolio the perfect platform for mastering the stock market.
+            </p>
+            <div class="row mt-5">
+                <div class="col-md-4 text-center feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+                    <h4 class="feature-title">Real-Time Simulation</h4>
+                    <p class="feature-description">
+                        Experience realistic stock market dynamics and hone your trading skills in a risk-free environment.
+                    </p>
+                </div>
+                <div class="col-md-4 text-center feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-pie-chart"></i>
+                    </div>
+                    <h4 class="feature-title">Profit & Loss Analysis</h4>
+                    <p class="feature-description">
+                        Gain in-depth insights into your trading performance with detailed profit and loss breakdowns.
+                    </p>
+                </div>
+                <div class="col-md-4 text-center feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </div>
+                    <h4 class="feature-title">Predictive Insights</h4>
+                    <p class="feature-description">
+                        Leverage advanced analytics to predict market trends and optimize your investment strategies.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- About Section -->
+    <section id="about" class="py-5 about-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <img src="https://via.placeholder.com/500x300" alt="About Stockfolio" class="img-fluid rounded shadow">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="section-title">About Stockfolio</h2>
+                    <p class="section-description">
+                        Stockfolio is your gateway to mastering the complexities of the stock market. Our platform offers an intuitive and realistic simulation, designed to help you:
+                    </p>
+                    <ul class="about-list">
+                        <li>Learn trading strategies in a risk-free environment.</li>
+                        <li>Analyze your trades with detailed performance insights.</li>
+                        <li>Build confidence before stepping into real markets.</li>
+                    </ul>
+                    <a href="/prediction/predict_feature" class="btn btn-primary mt-3">Explore Features</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center fw-bold">Contact Us</h2>
+            <form class="mt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Your Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" rows="4" placeholder="Enter your message"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

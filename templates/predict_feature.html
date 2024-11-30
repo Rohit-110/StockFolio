@@ -1,0 +1,177 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Predict Feature
+{% endblock %}
+
+{% block main %}
+   <!-- Header -->
+   <header class="text-center bg-primary text-white py-5">
+    <h1 class="section-title">Stockfolio Enhanced Features</h1>
+    <p class="lead">Dive into advanced portfolio analysis and insights.</p>
+</header>
+
+<!-- Input Form Section -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">Input Your Portfolio Details</h2>
+    <div class="form-container animate__animated animate__fadeInUp">
+        <form id="predictionForm">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="stockHoldings" class="form-label">Stock Holdings (Qty, Type)</label>
+                    <input type="text" class="form-control" id="stockHoldings" placeholder="e.g., 10 AAPL, 5 TSLA">
+                </div>
+                <div class="col-md-4">
+                    <label for="avgPurchasePrice" class="form-label">Average Purchase Price</label>
+                    <input type="number" class="form-control" id="avgPurchasePrice" placeholder="e.g., 150">
+                </div>
+                <div class="col-md-4">
+                    <label for="investmentAmount" class="form-label">Initial Investment</label>
+                    <input type="number" class="form-control" id="investmentAmount" placeholder="e.g., 10000">
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-primary btn-predict" id="predictBtn">Generate Insights</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Charts and Outcomes Section -->
+<section class="container my-5" id="charts-container">
+    <h2 class="text-center">Visualized Predictions</h2>
+    <p class="text-center">Analyze your portfolio performance through multiple visualizations.</p>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="lineChart" width="400" height="200"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="pieChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <canvas id="barChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</section>
+
+<!-- Tabular Summary Section -->
+<section class="container my-5 table-container">
+    <h2 class="text-center">Portfolio Summary</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr class="table-primary">
+                    <th>Category</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody id="summaryTable">
+                <tr>
+                    <td>Current Portfolio Value</td>
+                    <td id="currentValue">$0</td>
+                </tr>
+                <tr>
+                    <td>Profit/Loss Margin</td>
+                    <td id="profitLossMargin">0%</td>
+                </tr>
+                <tr>
+                    <td>Predicted Growth Rate</td>
+                    <td id="growthRate">0%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-center bg-light py-3">
+    <p>&copy; 2024 Stockfolio. All rights reserved.</p>
+</footer>
+
+<!-- JavaScript -->
+<script>
+    // Initialize charts
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    const barCtx = document.getElementById('barChart').getContext('2d');
+
+    const lineChart = new Chart(lineCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Portfolio Value Over Time',
+                data: [],
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.5)',
+                fill: true,
+                tension: 0.3
+            }]
+        }
+    });
+
+    const pieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Profit', 'Loss'],
+            datasets: [{
+                label: 'Profit/Loss Breakdown',
+                data: [0, 0],
+                backgroundColor: ['#007bff', '#dc3545']
+            }]
+        }
+    });
+
+    const barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Initial Investment', 'Current Value'],
+            datasets: [{
+                label: 'Investment Comparison',
+                data: [0, 0],
+                backgroundColor: ['#ffc107', '#28a745']
+            }]
+        }
+    });
+
+    // Generate insights on button click
+document.getElementById('predictBtn').addEventListener('click', () => {
+    const investmentAmount = parseFloat(document.getElementById('investmentAmount').value);
+    const randomGrowth = (Math.random() * 20 - 10).toFixed(2); // Simulated growth in %
+    const currentValue = (investmentAmount * (1 + randomGrowth / 100)).toFixed(2);
+    const absoluteProfitLoss = Math.abs(randomGrowth).toFixed(2);
+
+    // Adjust profit/loss percentages to ensure visibility
+    let profitPercentage = randomGrowth > 0 ? absoluteProfitLoss : 1; // Assign at least 1% for zero profit
+    let lossPercentage = randomGrowth < 0 ? absoluteProfitLoss : 1;  // Assign at least 1% for zero loss
+    const totalPercentage = parseFloat(profitPercentage) + parseFloat(lossPercentage);
+
+    // Normalize percentages to add up to 100
+    profitPercentage = ((profitPercentage / totalPercentage) * 100).toFixed(2);
+    lossPercentage = ((lossPercentage / totalPercentage) * 100).toFixed(2);
+
+    // Update line chart
+    const currentTime = new Date().toLocaleTimeString();
+    lineChart.data.labels.push(currentTime);
+    lineChart.data.datasets[0].data.push(currentValue);
+    lineChart.update();
+
+    // Update pie chart
+    pieChart.data.datasets[0].data = [profitPercentage, lossPercentage];
+    pieChart.update();
+
+    // Update bar chart
+    barChart.data.datasets[0].data = [investmentAmount, currentValue];
+    barChart.update();
+
+    // Update table
+    document.getElementById('currentValue').innerText = `$${currentValue}`;
+    document.getElementById('profitLossMargin').innerText = `${randomGrowth}%`;
+    document.getElementById('growthRate').innerText = `${Math.abs(randomGrowth)}%`;
+});
+
+</script>
+{% endblock %}
